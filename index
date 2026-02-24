@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Strava - BREATHE INDEX</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        .loader { text-align: center; }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: #FC4C02;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="spinner"></div>
+        <h2>🔗 Connexion à Strava...</h2>
+        <p>Récupération de tes activités</p>
+    </div>
+
+    <script>
+        const CLIENT_ID = '205526';
+        const CLIENT_SECRET = 'TON_CLIENT_SECRET_ICI';
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        
+        if (!code) {
+            alert('❌ Code OAuth manquant');
+            window.location.href = 'https://www.wetreez.org/eptindex';
+        } else {
+            fetch('https://www.strava.com/oauth/token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    client_id: CLIENT_ID,
+                    client_secret: CLIENT_SECRET,
+                    code: code,
+                    grant_type: 'authorization_code'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.access_token) {
+                    localStorage.setItem('strava_access_token', data.access_token);
+                    localStorage.setItem('strava_refresh_token', data.refresh_token);
+                    localStorage.setItem('strava_athlete', JSON.stringify(data.athlete));
+                    sessionStorage.setItem('strava-just-connected', 'true');
+                    
+                    window.location.href = 'https://www.wetreez.org/eptindex';
+                } else {
+                    alert('❌ Erreur Strava: ' + (data.message || 'Inconnue'));
+                    console.error('Erreur:', data);
+                    window.location.href = 'https://www.wetreez.org/eptindex';
+                }
+            })
+            .catch(error => {
+                alert('❌ Erreur: ' + error.message);
+                window.location.href = 'https://www.wetreez.org/eptindex';
+            });
+        }
+    </script>
+</body>
+</html>
+```
+
+5. **⚠️ REMPLACE `TON_CLIENT_SECRET_ICI`** par ton vrai secret Strava
+   - **Va sur :** https://www.strava.com/settings/api
+   - **Clique sur "Show"** à côté de "Client Secret"
+   - **Copie la longue chaîne** et colle-la dans le code
+
+6. **Scroll en bas et clique sur "Commit changes"**
+7. **Clique encore sur "Commit changes"** dans la popup
+
+---
+
+### **ÉTAPE 5 : ATTENDS 1-2 MINUTES**
+
+**GitHub Pages prend quelques secondes à se déployer.**
+
+**Teste l'URL :**
+```
+https://ton-username.github.io/strava-callback/
