@@ -60,20 +60,22 @@
                 })
             })
             .then(res => res.json())
-            .then(data => {
-                if (data.access_token) {
-                    localStorage.setItem('strava_access_token', data.access_token);
-                    localStorage.setItem('strava_refresh_token', data.refresh_token);
-                    localStorage.setItem('strava_athlete', JSON.stringify(data.athlete));
-                    sessionStorage.setItem('strava-just-connected', 'true');
-                    
-                    window.location.href = 'https://www.wetreez.org/eptindex';
-                } else {
-                    alert('❌ Erreur Strava: ' + (data.message || 'Inconnue'));
-                    console.error('Erreur:', data);
-                    window.location.href = 'https://www.wetreez.org/eptindex';
-                }
-            })
+           .then(data => {
+    if (data.access_token) {
+        // Encoder les données pour l'URL
+        const params = new URLSearchParams({
+            access_token: data.access_token,
+            refresh_token: data.refresh_token,
+            athlete: JSON.stringify(data.athlete)
+        });
+        
+        window.location.href = 'https://www.wetreez.org/eptindex#strava-callback?' + params.toString();
+    } else {
+        alert('❌ Erreur Strava: ' + (data.message || 'Inconnue'));
+        console.error('Erreur:', data);
+        window.location.href = 'https://www.wetreez.org/eptindex';
+    }
+})
             .catch(error => {
                 alert('❌ Erreur: ' + error.message);
                 window.location.href = 'https://www.wetreez.org/eptindex';
