@@ -40,7 +40,7 @@
 
     <script>
         const CLIENT_ID = '205526';
-        const CLIENT_SECRET = 'TON_CLIENT_SECRET_ICI';
+        const CLIENT_SECRET = 'c2e348e6be71a640a47218be14def27d4dd2e54e';
         
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
@@ -82,22 +82,3 @@
     </script>
 </body>
 </html>
-```
-
-5. **⚠️ REMPLACE `TON_CLIENT_SECRET_ICI`** par ton vrai secret Strava
-   - **Va sur :** https://www.strava.com/settings/api
-   - **Clique sur "Show"** à côté de "Client Secret"
-   - **Copie la longue chaîne** et colle-la dans le code
-
-6. **Scroll en bas et clique sur "Commit changes"**
-7. **Clique encore sur "Commit changes"** dans la popup
-
----
-
-### **ÉTAPE 5 : ATTENDS 1-2 MINUTES**
-
-**GitHub Pages prend quelques secondes à se déployer.**
-
-**Teste l'URL :**
-```
-https://ton-username.github.io/strava-callback/
