@@ -66,7 +66,7 @@
             const refresh = urlParams.get('refresh');
             const athlete = urlParams.get('athlete');
             
-            window.location.href = `https://www.wetreez.org/eptindex#strava_token=${token}&strava_refresh=${refresh}&strava_athlete=${encodeURIComponent(athlete)}&strava_connected=true`;
+           window.location.href = `https://www.wetreez.org/eptindex?strava_token=${token}&strava_refresh=${refresh}&strava_athlete=${encodeURIComponent(athlete)}&strava_connected=true`;
         }
     </script>
 </body>
