@@ -70,4 +70,16 @@
                     
                     window.location.href = './success.html?' + params.toString();
                 } else {
-                    alert('❌ Erreur Strava: ' + (data.message || 'Inc
+                    alert('❌ Erreur Strava: ' + (data.message || 'Inconnue'));
+                    console.error('Erreur:', data);
+                    window.location.href = 'https://www.wetreez.org/eptindex';
+                }
+            })
+            .catch(error => {
+                alert('❌ Erreur: ' + error.message);
+                window.location.href = 'https://www.wetreez.org/eptindex';
+            });
+        }
+    </script>
+</body>
+</html>
