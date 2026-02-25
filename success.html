@@ -1,1 +1,73 @@
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Strava réussie !</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        .success-container {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px;
+        }
+        .checkmark {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: scaleIn 0.5s ease-out;
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+        h1 { margin-bottom: 20px; }
+        p { font-size: 1.1rem; margin-bottom: 30px; opacity: 0.9; }
+        .continue-btn {
+            background: #FC4C02;
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(252, 76, 2, 0.3);
+        }
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(252, 76, 2, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="checkmark">✅</div>
+        <h1>Connexion Strava réussie !</h1>
+        <p>Tes activités trail sont prêtes à être importées dans BREATHE INDEX.</p>
+        <button class="continue-btn" onclick="continueToBreath Index()">
+            Continuer vers BREATHE INDEX
+        </button>
+    </div>
+    <script>
+        function continueToBreathIndex() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const refresh = urlParams.get('refresh');
+            const athlete = urlParams.get('athlete');
+            
+            window.location.href = `https://www.wetreez.org/eptindex#strava_token=${token}&strava_refresh=${refresh}&strava_athlete=${encodeURIComponent(athlete)}&strava_connected=true`;
+        }
+    </script>
+</body>
+</html>
