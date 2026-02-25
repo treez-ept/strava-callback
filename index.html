@@ -37,7 +37,6 @@
         <h2>🔗 Connexion à Strava...</h2>
         <p>Récupération de tes activités</p>
     </div>
-
     <script>
         const CLIENT_ID = '205526';
         const CLIENT_SECRET = 'c2e348e6be71a640a47218be14def27d4dd2e54e';
@@ -60,28 +59,15 @@
                 })
             })
             .then(res => res.json())
-           .then(data => {
-    if (data.access_token) {
-        // Utiliser query parameters au lieu du hash
-        const params = new URLSearchParams({
-            strava_token: data.access_token,
-            strava_refresh: data.refresh_token,
-            strava_athlete: JSON.stringify(data.athlete),
-            strava_connected: 'true'
-        });
-        
-        window.location.href = 'https://www.wetreez.org/eptindex?' + params.toString();
-    } else {
-        alert('❌ Erreur Strava: ' + (data.message || 'Inconnue'));
-        console.error('Erreur:', data);
-        window.location.href = 'https://www.wetreez.org/eptindex';
-    }
-})
-            .catch(error => {
-                alert('❌ Erreur: ' + error.message);
-                window.location.href = 'https://www.wetreez.org/eptindex';
-            });
-        }
-    </script>
-</body>
-</html>
+            .then(data => {
+                if (data.access_token) {
+                    // Rediriger vers la page de succès
+                    const params = new URLSearchParams({
+                        token: data.access_token,
+                        refresh: data.refresh_token,
+                        athlete: JSON.stringify(data.athlete)
+                    });
+                    
+                    window.location.href = './success.html?' + params.toString();
+                } else {
+                    alert('❌ Erreur Strava: ' + (data.message || 'Inc
