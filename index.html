@@ -20,7 +20,7 @@
                 if (data.access_token) {
                     localStorage.setItem('strava_access_token', data.access_token);
                     localStorage.setItem('strava_athlete', JSON.stringify(data.athlete));
-                    window.location.href = 'https://wetreez.org/eptindex?strava_connected=true';
+                    window.location.href = 'https://wetreez.org/eptindex#strava_token=' + data.access_token;
                 } else {
                     document.body.innerHTML = '<h2>❌ Erreur Strava</h2><p>' + JSON.stringify(data) + '</p>';
                 }
