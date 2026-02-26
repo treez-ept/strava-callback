@@ -1,83 +1,29 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion Strava - BREATHE INDEX</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: Arial, sans-serif;
-            color: white;
-        }
-        .loader { text-align: center; }
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top-color: #FC4C02;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 30px;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
 </head>
 <body>
-    <div class="loader">
-        <div class="spinner"></div>
-        <h2>🔗 Connexion à Strava...</h2>
-        <p>Récupération de tes activités</p>
-    </div>
+    <h2>🔗 Connexion à Strava...</h2>
+    <p>Récupération de tes activités</p>
+
     <script>
-        const CLIENT_ID = '205526';
-        const CLIENT_SECRET = 'c2e348e6be71a640a47218be14def27d4dd2e54e';
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
+        const code = new URLSearchParams(window.location.search).get('code');
         
         if (!code) {
-            alert('❌ Code OAuth manquant');
-            window.location.href = 'https://www.wetreez.org/eptindex';
+            document.body.innerHTML = '<h2>❌ Erreur : code manquant</h2>';
         } else {
-            fetch('https://www.strava.com/oauth/token', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    client_id: CLIENT_ID,
-                    client_secret: CLIENT_SECRET,
-                    code: code,
-                    grant_type: 'authorization_code'
-                })
-            })
+            fetch('https://us-central1-treez-eco-score.cloudfunctions.net/stravaCallback?code=' + code)
             .then(res => res.json())
             .then(data => {
                 if (data.access_token) {
-                    // Rediriger vers la page de succès
-                    const params = new URLSearchParams({
-                        token: data.access_token,
-                        refresh: data.refresh_token,
-                        athlete: JSON.stringify(data.athlete)
-                    });
-                    
-                    window.location.href = './success.html?' + params.toString();
+                    localStorage.setItem('strava_access_token', data.access_token);
+                    localStorage.setItem('strava_athlete', JSON.stringify(data.athlete));
+                    window.location.href = 'https://wetreez.org/eptindex?strava_connected=true';
                 } else {
-                    alert('❌ Erreur Strava: ' + (data.message || 'Inconnue'));
-                    console.error('Erreur:', data);
-                    window.location.href = 'https://www.wetreez.org/eptindex';
+                    document.body.innerHTML = '<h2>❌ Erreur Strava</h2><p>' + JSON.stringify(data) + '</p>';
                 }
-            })
-            .catch(error => {
-                alert('❌ Erreur: ' + error.message);
-                window.location.href = 'https://www.wetreez.org/eptindex';
             });
         }
     </script>
